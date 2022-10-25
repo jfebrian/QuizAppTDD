@@ -5,6 +5,7 @@ import SwiftUI
 
 struct AnswerOptionsView: View {
     @EnvironmentObject var gameStateManager: GameStateManager
+    @EnvironmentObject var gameScoreManager: GameScoreManager
     @StateObject var viewModel: AnswerOptionsViewModel
 
     var body: some View {
@@ -19,9 +20,17 @@ struct AnswerOptionsView: View {
     private func answerButton(for grid: AnswerGrid) -> AnswerButton {
         AnswerButton(grid: grid) {
             viewModel.selectAnswer(in: grid) { isCorrectAnswer in
+                if isCorrectAnswer {
+                    gameScoreManager.selectCorrectAnswer()
+                } else {
+                    gameScoreManager.selectWrongAnswer()
+                }
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     withAnimation(.easeOut) {
-                        gameStateManager.nextQuiz()
+                        gameStateManager.nextQuiz(gameOverAction: {
+                            gameScoreManager.endGame()
+                        })
                     }
                 }
             }

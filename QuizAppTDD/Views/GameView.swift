@@ -6,6 +6,7 @@ import SwiftUI
 struct GameView: View {
     @Namespace var animation
     @StateObject var gameStateManager = GameStateManager()
+    @StateObject var gameScoreManager = GameScoreManager()
     
     var body: some View {
         VStack {
@@ -14,6 +15,7 @@ struct GameView: View {
                 .frame(maxHeight: .infinity)
         }
         .environmentObject(gameStateManager)
+        .environmentObject(gameScoreManager)
         .namespace(animation)
     }
 }

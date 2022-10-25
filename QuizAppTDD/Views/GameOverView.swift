@@ -22,13 +22,15 @@ struct GameOverView: View {
 }
 
 struct OngoingGameScoreView: View {
+    @EnvironmentObject var scoreManager: GameScoreManager
+    
     var body: some View {
         HStack {
-            ComboLabelView(title: "Combo Bonus", value: "0")
+            ComboLabelView(title: "Combo Bonus", value: "\(scoreManager.comboBonus)")
             Spacer()
             ScoreView()
             Spacer()
-            ComboLabelView(title: "Combo Multiplier", value: "0x")
+            ComboLabelView(title: "Combo Multiplier", value: "\(scoreManager.comboMultiplier)x")
         }
         .padding(.horizontal)
     }
@@ -50,6 +52,7 @@ struct ComboLabelView: View {
 }
 
 struct ScoreView: View {
+    @EnvironmentObject var scoreManager: GameScoreManager
     @Environment(\.namespace) var animation
     
     var body: some View {
@@ -57,7 +60,7 @@ struct ScoreView: View {
             Text("SCORE")
                 .font(.caption)
                 .foregroundColor(.secondary)
-            Text("0")
+            Text("\(scoreManager.score)")
                 .font(.largeTitle)
         }
         .matchedGeometryEffect(id: "ScoreView", in: animation ?? Namespace().wrappedValue)
@@ -67,6 +70,7 @@ struct ScoreView: View {
 struct RestartGameButton: View {
     @Environment(\.namespace) var animation
     @EnvironmentObject var gameStateManager: GameStateManager
+    @EnvironmentObject var gameScoreManager: GameScoreManager
     @State var isCompact: Bool
     
     init(isCompact: Bool = false) {
@@ -77,6 +81,7 @@ struct RestartGameButton: View {
         Button(action: {
             withAnimation(.easeInOut) {
                 gameStateManager.restartGame()
+                gameScoreManager.startGame()
             }
         }, label: {
             if isCompact {

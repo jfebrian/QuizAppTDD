@@ -28,6 +28,7 @@ struct GameListView: View {
 
 struct StartGameButton: View {
     @EnvironmentObject var gameStateManager: GameStateManager
+    @EnvironmentObject var gameScoreManager: GameScoreManager
     
     let game: Game
     
@@ -36,6 +37,7 @@ struct StartGameButton: View {
             Button(action: {
                 withAnimation(.easeInOut) {
                     gameStateManager.startGame(game)
+                    gameScoreManager.startGame()
                 }
             }, label: {
                 Label(game.title, systemImage: game.systemImage)

@@ -12,6 +12,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .notStarted)
         XCTAssertNil(sut.currentQuiz)
         XCTAssertEqual(sut.progressLabel, "Vidio Games")
+        XCTAssertEqual(sut.progress, 0)
     }
     
     func test_startGame_withEmptyQuizGame() {
@@ -23,6 +24,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .gameOver)
         XCTAssertNil(sut.currentQuiz)
         XCTAssertEqual(sut.progressLabel, "Game Over")
+        XCTAssertEqual(sut.progress, 1)
     }
     
     func test_startGame_withOneQuizGame() {
@@ -35,6 +37,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .ongoing(quiz: quizStub, quizNumber: 1, quizCount: 1))
         XCTAssertEqual(sut.currentQuiz, quizStub)
         XCTAssertEqual(sut.progressLabel, "Quiz 1 of 1")
+        XCTAssertEqual(sut.progress, 0)
     }
     
     func test_startGame_whenProvidedMultipleQuiz_shouldUpdateQuizzes_withMultipleQuiz() {
@@ -47,6 +50,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .ongoing(quiz: firstQuiz, quizNumber: 1, quizCount: 2))
         XCTAssertEqual(sut.currentQuiz, firstQuiz)
         XCTAssertEqual(sut.progressLabel, "Quiz 1 of 2")
+        XCTAssertEqual(sut.progress, 0)
     }
     
     func test_resetGame() {
@@ -58,6 +62,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .notStarted)
         XCTAssertNil(sut.currentQuiz)
         XCTAssertEqual(sut.progressLabel, "Vidio Games")
+        XCTAssertEqual(sut.progress, 0)
     }
     
     func test_restartGame() {
@@ -72,6 +77,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .ongoing(quiz: firstQuiz, quizNumber: 1, quizCount: 2))
         XCTAssertEqual(sut.currentQuiz, firstQuiz)
         XCTAssertEqual(sut.progressLabel, "Quiz 1 of 2")
+        XCTAssertEqual(sut.progress, 0)
     }
     
     func test_nextQuiz_shouldGoToNextQuiz() {
@@ -86,6 +92,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .ongoing(quiz: secondQuiz, quizNumber: 2, quizCount: 2))
         XCTAssertEqual(sut.currentQuiz, secondQuiz)
         XCTAssertEqual(sut.progressLabel, "Quiz 2 of 2")
+        XCTAssertEqual(sut.progress, 0.5)
     }
 
     func test_nextQuiz_onLastQuiz_shouldEndGame_andCallGameOverAction() {
@@ -105,6 +112,7 @@ final class GameStateManagerTest: XCTestCase {
         XCTAssertEqual(sut.gameState, .gameOver)
         XCTAssertEqual(sut.currentQuiz, nil)
         XCTAssertEqual(sut.progressLabel, "Game Over")
+        XCTAssertEqual(sut.progress, 1)
     }
 }
 

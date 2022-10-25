@@ -17,7 +17,7 @@ final class GameStateManager: ObservableObject {
         case .notStarted:
             return 0
         case .ongoing(_, let quizNumber, let quizCount):
-            return Double((quizNumber-1) / quizCount)
+            return Double(quizNumber-1) / Double(quizCount)
         case .gameOver:
             return 1
         }

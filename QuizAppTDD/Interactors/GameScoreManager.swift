@@ -9,7 +9,9 @@ final class GameScoreManager: ObservableObject {
     var comboMultiplier = 0
     
     func startGame() {
-        
+        score = 0
+        comboBonus = 0
+        comboMultiplier = 0
     }
     
     func selectCorrectAnswer() {
@@ -26,6 +28,6 @@ final class GameScoreManager: ObservableObject {
     }
     
     func endGame() {
-        
+        score += comboBonus
     }
 }

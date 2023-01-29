@@ -91,10 +91,11 @@ final class GameScoreManagerTest: XCTestCase {
     func testSelectWrongAnswer_scoreIncreasesByComboBonus_whenSelectedCorrectAnswer() {
         sut.startGame()
         sut.selectCorrectAnswer()
+        sut.selectCorrectAnswer()
         
         sut.selectWrongAnswer()
         
-        XCTAssertEqual(sut.score, 5)
+        XCTAssertEqual(sut.score, 20)
     }
     
     ///    Given: Player selected correct answer
@@ -106,6 +107,7 @@ final class GameScoreManagerTest: XCTestCase {
         
         sut.selectWrongAnswer()
         
+        XCTAssertEqual(sut.score, 5)
         XCTAssertEqual(sut.comboBonus, 0)
         XCTAssertEqual(sut.comboMultiplier, 0)
     }
@@ -119,5 +121,36 @@ final class GameScoreManagerTest: XCTestCase {
         
         XCTAssertEqual(sut.score, 0)
     }
-
+    
+    ///    Given: Player is playing a game and select some correct answer
+    ///    When: Player ends the game
+    ///    Then: Player score added by the current combo bonus
+    func testEndsGame_scoreAddedByCurrentComboBonus_whenSelectSomeCorrectAnswer() {
+        sut.startGame()
+        sut.selectCorrectAnswer()
+        sut.selectCorrectAnswer()
+        sut.selectCorrectAnswer()
+        
+        sut.endGame()
+        
+        XCTAssertEqual(sut.score, 45)
+    }
+    
+    ///    Given: Player is already playing game and then ends the game
+    ///    When: Player start playing a game again
+    ///    Then: Player score, combo bonus and multiplier resets to 0
+    func testStartGame_scoreComboBonusAndMultiplierResetsToZero() {
+        sut.startGame()
+        sut.selectCorrectAnswer()
+        sut.selectCorrectAnswer()
+        sut.endGame()
+        
+        XCTAssertEqual(sut.score, 25)
+        
+        sut.startGame()
+        
+        XCTAssertEqual(sut.score, 0)
+        XCTAssertEqual(sut.comboBonus, 0)
+        XCTAssertEqual(sut.comboMultiplier, 0)
+    }
 }
